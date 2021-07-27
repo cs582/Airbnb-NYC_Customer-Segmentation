@@ -8,7 +8,7 @@ There have been other data science projects related that have implemented the K-
 
 # Methodology
 
-Data was retrieved from insideirbnb.com during March of 2020. The training dataset consists of 38,843 airbnbs, ~42.81% in Manhattan, ~42.23% in Brooklyn, ~11.77% in Queens, ~2.25% in Bronx, and ~0.8% in Staten Island. ~52.34% are Entire homes/apartments, while ~45.47% are Private rooms, and only ~2.17% are Shared rooms [3].
+Data was retrieved from insideirbnb.com during March of 2020. The training dataset consists of 38,843 airbnbs, ~42.81% in Manhattan, ~42.23% in Brooklyn, ~11.77% in Queens, ~2.25% in Bronx, and ~0.8% in Staten Island. ~52.34% are Entire homes/apartments, while ~45.47% are Private rooms, and only ~2.17% are Shared rooms.
 Data cleaning was performed using NumPy and Pandas, the first step was to consider the most relevant parameters to find groups that might be suspicious of running illegal business and groups of common users. The parameters chosen to input to the k-means algorithm project were room type, price, reviews per month, calculated host listings count, and availability. Except for room type all the other parameters are numerical data, room type is categorical non-numerical data, therefore, it was transformed to numerical data. The reason for not using geographic location data such as longitude, latitude, neighborhood, etcetera for the clustering process was to reduce the bias towards certain area.
 Before implementing the K-means algorithm, the dataset was converted to a NumPy array and normalized using the StandardScaler method of Scikit-learn. Afterwards, the Elbow method was implemented to determine the optimum value of K (Figure 1.0). As observed in Figure 1.1, the first sharp slope change occurs in K = 6. Therefore, that was chosen as the K value.
 Finally, a new column was added to the data frame to conduct the analysis and the group profiles were build averaging all the numeric features.
@@ -92,6 +92,6 @@ Airbnb users can be classified in six main groups using unsupervised learning us
 
 # References
 
-[1] https://shravan-kuchkula.github.io/nyc-airbnb-kmeans/
+[1] https://shravan-kuchkula.github.io/nyc-airbnb-kmeans/ <p></p>
 [2] http://insideairbnb.com/new-york-city/
 
