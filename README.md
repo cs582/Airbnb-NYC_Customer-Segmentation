@@ -49,6 +49,15 @@ Since the room type T_{x} was originally a non-numerical variable, I mapped it t
 
 The resulting groups are shown in Tables 1 and 2. Those groups A were produced by K-Means and groups B were produced by OPTICS.
 
+<img src = "fig3.jpg">
+<img src = "fig4.png">
+
+By looking at Figure 1(a), one can observe that some elements could actually belong to the same group, but due to the limitations of K-Means, they were clustered in different groups. Figure 1(b) shows the groups given by OPTICS, however most of the elements don't belong to any group, but Figure 2 shows only those groups produced by OPTICS that belong to some group.
+
+<img src = "fig5.png">
+
+It can be observed that both methods agree on one group, Group A6 and Group B16 are the exact same. Which turns out to be a very suspicious group since their Avg. number of host listings is significantly higher than the rest of the groups.
+
 Table 1: Groups A
 <table style="width:100%">
   <tr>
