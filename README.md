@@ -1,33 +1,58 @@
 # Airbnb-NYC_Customer-Segmentation
-Use the K-means algorithm to partition the databse of Airbnb users in New York City and identify suspicious users
+Use the K-means and OPTICS algorithms to partition the databse of Airbnb users in New York City and identify suspicious users
 
 # Introduction
 
-The goal of this project is to identify the characteristics of the different groups of users that rent Airbnbs in New York City, as well as identifying suspicious groups of users that might be running businesses illegally.
-There have been other data science projects related that have implemented the K-means algorithm for clustering of Airbnb data [1], however, this project brings a new perspective into this database by taking into consideration features such as hosts listing counts, which tells us what are the number of rooms/apartments that are hosted in one single Airbnb. This is done with the objective of knowing what users could be running businesses without proper licenses or are avoiding taxes by taking advantage of Airbnb [2].
+Airbnb has quickly become the preferred choice for travelers around the world because of it's simplicity and flexibility. However, it's not only the customers the ones who are being benefited, but also the hosts. Further, there are times when hosts take advantage of this app and start running illegal businesses like hotels without paying the required taxes. That's why some people have attempted to find out who exactly could be running their businesses in this way.
+
+In this project, I analyze Airbnb data from New York that I retrieved from http://insideairbnb.com/ and analyze the data to segment the customers in different groups according to their characteristics. For this project, I make use of Unsupervised Machine Learning algorithms, namely, K-Means and OPTICS Clustering
+
+Finally, I perform data visualization in order to compare the characteristics of different groups and find if the availability of these listings is greater than the rest and if their prices are more accessible than the median.
+
+## Overview of K-Means
+The K-Means algorithm is an unsupervised Machine Learning approach to cluster data into different groups. 
+
+In a subspace of N-dimensions, a K-Means algorithm will cluster the data in K groups. Each group will have a centroid and every data-point will be assigned to its closest centroid.
+
+## Overview of OPTICS Clustering
+
+Similar to K-Means, OPTICS is also an unsupervised Machine Learning algorithm. But different from it, OPTICS does not take an M number of clusters/groups, but rather asks for a minimum number of data-points in order to consider each group.
+
+This algorithm is similar to DBSCAN but is slightly more complex.
 
 # Methodology
 
-Data was retrieved from insideirbnb.com during March of 2020. The training dataset consists of 38,843 airbnbs, ~42.81% in Manhattan, ~42.23% in Brooklyn, ~11.77% in Queens, ~2.25% in Bronx, and ~0.8% in Staten Island. ~52.34% are Entire homes/apartments, while ~45.47% are Private rooms, and only ~2.17% are Shared rooms.
-Data cleaning was performed using NumPy and Pandas, the first step was to consider the most relevant parameters to find groups that might be suspicious of running illegal business and groups of common users. The parameters chosen to input to the k-means algorithm project were room type, price, reviews per month, calculated host listings count, and availability. Except for room type all the other parameters are numerical data, room type is categorical non-numerical data, therefore, it was transformed to numerical data. The reason for not using geographic location data such as longitude, latitude, neighborhood, etcetera for the clustering process was to reduce the bias towards certain area.
-Before implementing the K-means algorithm, the dataset was converted to a NumPy array and normalized using the StandardScaler method of Scikit-learn. Afterwards, the Elbow method was implemented to determine the optimum value of K (Figure 1.0). As observed in Figure 1.1, the first sharp slope change occurs in K = 6. Therefore, that was chosen as the K value.
-Finally, a new column was added to the data frame to conduct the analysis and the group profiles were build averaging all the numeric features.
+The data was retrieved on May of 2019.
 
-<img src = "fig1.jpg" alt = "Figure 1">
+It consists of 38843 data-points and contains data from users in Manhattan, Brooklyn, Queens, Bronx, and Staten Island. The dominant regions are Manhattan and Brooklyn, while Staten Island has only a few hundred users.
+
+<img src = "fig1.png">
+<img src = "fig2.png">
+
+To perform the data analysis, I choose 5 features to perform the data analysis, namely:
+
+• Room Type - T_{x}
+
+• Price - P_{x}
+
+• Reviews per month - R_{x}
+
+• Calculated Host Listings - L_{x} 
+
+• Availability - A_{x}
+
+I decided not to use geographical information such as location and neighborhood since those cold produce biased results. In order to find the right K for K-Means, I used the Elbow method, which turned out to give the value K=6.
+
+Since the room type T_{x} was originally a non-numerical variable, I mapped it to turn it numerical. Afterwards, all these variables were re-scaled using scikit learn's StandardScaler. And then this new matrix $A$ of features is passed to the K-Means and OPTICS algorithm. So finally each data-point is mapped to a group A and a group B.
 
 # Results
 
-The resulting group profiles are shown in Table 1. Most of these groups are widely distributed in the city of New York (Figure 2), except for group 4 whose users are only in Manhattan and group 6 whose users are only distributed in Manhattan, Brooklyn, and Queens.
+The resulting groups are shown in Tables 1 and 2. Those groups A were produced by K-Means and groups B were produced by OPTICS.
 
-<img src = "fig2.jpg" alt = "Figure 2">
-<img src = "fig3.jpg" alt = "Figure 3">
-
-Given their profiles shown in Table 1.0, groups 1 and 5 may represent the common user of Airbnb, people who rent for no more than 45 days a year and therefore have relatively low activity (indicated by the number of reviews per month), however, group 1 represents private rooms while group 5 represents entire homes/apartments, also group 5’s average price is more than twice the average price of group 1.
-
+Table 1: Groups A
 <table style="width:100%">
   <tr>
     <th>Group</th>
-    <th>Number of Members</th>
     <th>Avg. Price</th>
     <th>Avg. Reviews per month</th>
     <th>Avg. Calculated host listings count</th>
@@ -35,7 +60,6 @@ Given their profiles shown in Table 1.0, groups 1 and 5 may represent the common
   </tr>
   <tr>
     <th>1</th>
-    <th>11,782</th>
     <th>$77.39</th>
     <th>0.83</th>
     <th>2.00</th>
@@ -43,7 +67,6 @@ Given their profiles shown in Table 1.0, groups 1 and 5 may represent the common
   </tr>
   <tr>
     <th>2</th>
-    <th>8,905</th>
     <th>$162.10</th>
     <th>1.15</th>
     <th>7.94</th>
@@ -51,7 +74,6 @@ Given their profiles shown in Table 1.0, groups 1 and 5 may represent the common
   </tr>
   <tr>
     <th>3</th>
-    <th>4,898</th>
     <th>$127.02</th>
     <th>4.78</th>
     <th>2.08</th>
@@ -59,7 +81,6 @@ Given their profiles shown in Table 1.0, groups 1 and 5 may represent the common
   </tr>
   <tr>
     <th>4</th>
-    <th>235</th>
     <th>$271.96</th>
     <th>1.72</th>
     <th>315.68</th>
@@ -67,7 +88,6 @@ Given their profiles shown in Table 1.0, groups 1 and 5 may represent the common
   </tr>
   <tr>
     <th>5</th>
-    <th>13,005</th>
     <th>$182.28</th>
     <th>0.73</th>
     <th>1.68</th>
@@ -75,7 +95,6 @@ Given their profiles shown in Table 1.0, groups 1 and 5 may represent the common
   </tr>
   <tr>
     <th>6</th>
-    <th>18</th>
     <th>$6439.50</th>
     <th>0.59</th>
     <th>2.89</th>
@@ -83,15 +102,158 @@ Given their profiles shown in Table 1.0, groups 1 and 5 may represent the common
   </tr>
 </table>
 
-Group 2 users have a relatively high host listings count, that means they have more rooms/apartments to rent as well as being open for most of the year, this group is mainly composed of private rooms and entire homes/apartments. Group 3 are those rooms/apartments that have the most activity as indicated by the number of reviews per month, this group is mainly composed of private rooms and entire homes/apartments. Then, group 6 are the most expensive rooms/apartments, their average price is more than 6000$USD, however, they also have the fewer members and the least active from all groups by having the lowest reviews per month, this group is mainly composed of entire homes/apartments.
-Finally, the suspicious users are in group 4, they are relatively few, but their calculated host listings count are the higher by a huge difference, they are available for most of the year, and the price is in the middle upper range; this group is mainly composed of entire homes/apartments.
+Table 2: Groups B
+<table style="width:100%">
+  <tr>
+    <th>Group</th>
+    <th>Avg. Price</th>
+    <th>Avg. Reviews per month</th>
+    <th>Avg. Calculated host listings count</th>
+    <th>Avg. Availability (out of 365 days)</th>
+  </tr>
+  <tr>
+    <th>1</th>
+    <th>$49.64</th>
+    <th>0.04</th>
+    <th>1.00</th>
+    <th>0.00</th>
+  </tr>
+  <tr>
+    <th>2</th>
+    <th>$39.55</th>
+    <th>0.03</th>
+    <th>1.00</th>
+    <th>0.00/th>
+  </tr>
+  <tr>
+    <th>3</th>
+    <th>$60.09</th>
+    <th>0.04</th>
+    <th>1.00</th>
+    <th>0.00</th>
+  </tr>
+  <tr>
+    <th>4</th>
+    <th>$79.83</th>
+    <th>0.03</th>
+    <th>1.00</th>
+    <th>0.00</th>
+  </tr>
+  <tr>
+    <th>5</th>
+    <th>$99.17</th>
+    <th>0.04</th>
+    <th>1.00</th>
+    <th>0.00</th>
+  </tr>
+  <tr>
+    <th>6</th>
+    <th>$57.16</th>
+    <th>1.42</th>
+    <th>4.77</th>
+    <th>165.87</th>
+  </tr>
+  <tr>
+    <th>7</th>
+    <th>$99.26</th>
+    <th>0.03</th>
+    <th>1.00</th>
+    <th>0.00</th>
+  </tr>
+  
+  <tr>
+    <th>8</th>
+    <th>$122.45</th>
+    <th>0.04</th>
+    <th>1.00</th>
+    <th>0.00</th>
+  </tr>
+  <tr>
+    <th>9</th>
+    <th>$149.88</th>
+    <th>0.02</th>
+    <th>1.00</th>
+    <th>0.00</th>
+  </tr>
+  <tr>
+    <th>10</th>
+    <th>$176.44</th>
+    <th>0.05</th>
+    <th>1.00</th>
+    <th>0.02</th>
+  </tr>
+  <tr>
+    <th>11</th>
+    <th>$199.16</th>
+    <th>0.08</th>
+    <th>1.00</th>
+    <th>0.11</th>
+  </tr>
+    <tr>
+    <th>12</th>
+    <th>$224.97</th>
+    <th>0.06</th>
+    <th>1.04</th>
+    <th>0.05</th>
+  </tr>
+  <tr>
+    <th>13</th>
+    <th>$249.77</th>
+    <th>0.07</th>
+    <th>1.00</th>
+    <th>0.00</th>
+  </tr>
+  <tr>
+    <th>14</th>
+    <th>$141.40</th>
+    <th>0.11</th>
+    <th>51.31</th>
+    <th>343.32</th>
+  </tr>
+  <tr>
+    <th>15</th>
+    <th>$181.95</th>
+    <th>0.20</th>
+    <th>92.55</th>
+    <th>314.19</th>
+  </tr>
+  <tr>
+    <th>16</th>
+    <th>$271.96</th>
+    <th>1.71</th>
+    <th>315.68</th>
+    <th>286.34</th>
+  </tr>
+</table>
+
+# Which Airbnbs are suspicious?
+
+As previously discussed, the most suspicious group is Group A4 or B16 (is the exact same in both tables) and the reason for that is the Avg. number of listings, which is the number of rooms/apartments/etc... that they offer, is significantly higher than the rest of the groups, furthermore, the rooms are available during most of the year. This is very striking because those are characteristics of a Hotel, which suggests that this could potentially be a group of customers running Hotels via Airbnb.
+
+There are other two groups that look highly suspicious, those are Groups B14 and B15, since they have more than 50 listings on average and they are also open during more of the year, almost all of it.
+
+Another suspicious group is Group A2, this is since the Avg. number of host listings is about 8, which is also higher than what is found in the rest of the groups of Table 1.
+
+Finally, another slightly suspicious group can be found in Table 2, Group B6 has an average of 4.77 host listings which is still higher than what can be found in the rest of the groups in Table 2.
+
+# Which Airbnbs are more accessible?
+
+After looking at the different groups generated by the algorithms, I was trying to find if those suspicious users offer more accessible prices since they run their listings as a business.
+
+After an examination, it was clear that Group A4/B16 was not more accessible than the rest. By looking at the groups in Table 1, such group was the second most expensive group of all, and by comparing it to those in Table 2 it could also be observed that such group is one of the most expensive ones.
+
+# Which Airbnb are avaiable most of the time?
+
+Finally, I attempted to find if the relationship of the different groups with their availability.
+
+By looking at the average number of available days in a year, it can be observed that users in Group A4/B16 are available during most of the year (286.34 days), similarly are Groups B14 and B15 (343.32 and 314.19 days) as well as those in Group A2 (308.21 days) and Group B6 (165.87 days).
+
+In general there's a correlation between the Avg. number of host listings and the Avg. availability since a high/low number of host listings corresponds to a high/low availability.
 
 # Conclusion
 
-Airbnb users can be classified in six main groups using unsupervised learning using the K-means algorithm. In this project, there were identified one potentially suspicious group and one highly suspicious group of users. There is no clear correlation between different parameters, further data about the dates the users are renting their apartments could bring new information. While they are distinct from each other, there are still some overlapping users that might not be fitting in the right group, another disadvantage of using K-means is that this algorithm does not identify outliers. This project can be improved by using transformations or other algorithms.
+This data analysis of Airbnb users in New York gives insightful information about how these are using the app, and what are some of the characteristics of the groups of users that use this app.
 
-# References
+I identified 3 highly suspicious groups in the dataset and 2 others that are slightly suspicious. Nonetheless, there could be overlapping users in some of these groups, so it would be better to just stick with one single Machine Learning method for customer segmentation.
 
-[1] https://shravan-kuchkula.github.io/nyc-airbnb-kmeans/ <p></p>
-[2] http://insideairbnb.com/new-york-city/
-
+Finally, there are some limitations of this study, one is that the K-Means algorithm does not perform as well in every kind of data, so it should be better to stick with OPTICS or use another alternative like DBSCAN or manually label data and use supervised Machine Learning algorithms. Another one is that this study only applies to NY city, therefore, suspicious groups in other regions could look very different. And lastly, it could be possible to make some sort of sentiment analysis to analyze the comments and find more insightful information.
